@@ -64,6 +64,18 @@ func main() {
 }
 
 func setETCDConfig() {
+	// "http://127.0.0.1:2379"
+	eURL := os.Getenv("etcd")
+	if eURL == "" {
+		eURL = "http://127.0.0.1:2379"
+		logrus.Println("Defaulting etcd conn to", eURL)
+	}
+	g, s, e := db.ConnectETCD(eURL)
+	if err != nil {
+		logrus.Fatalln("Could not connect to etcd! For url", eURL)
+	}
+	db.DefaultETCDClient.Getter = g
+	db.DefaultETCDClient.Setter = s
 
 }
 
