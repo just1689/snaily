@@ -3,7 +3,7 @@ package api
 import (
 	"fmt"
 	"github.com/sirupsen/logrus"
-	"github.com/team142/snaily/db"
+	"github.com/team142/snaily/controller"
 	"net/http"
 )
 
@@ -71,6 +71,6 @@ func checkKey(r *http.Request) (authenticated bool, ID string) {
 	if key == "" {
 		return
 	}
-	return db.GlobalSessionCache.SessionValid(key)
+	return controller.SessionValid(key)
 
 }

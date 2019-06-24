@@ -100,7 +100,7 @@ func handleLoginUser(w http.ResponseWriter, r *http.Request) {
 	if dbUser != nil && dbUser.ID != "" && dbUser.CheckPassword(user.Password) {
 
 		key := uuid.NewV4().String()
-		db.GlobalSessionCache.SetSession(key, dbUser.ID, 24*time.Hour)
+		controller.SetSession(key, dbUser.ID, 24*time.Hour)
 		if err = utils.WriteXToWriter(w, model.MessageLoginResponseV1{
 			OK:  true,
 			Key: key,
