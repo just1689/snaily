@@ -75,7 +75,7 @@ export class HomeComponent implements OnInit {
       if (index === -1) {
         this.waitingForMe.push(a);
       } else {
-        // this.waitingForMe[index] = a;
+        this.waitingForMe[index] = a;
       }
     }
 
