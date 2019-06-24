@@ -7,7 +7,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/team142/snaily/bus"
 	"github.com/team142/snaily/controller"
-	"github.com/team142/snaily/db"
 )
 
 func SetupSync(entitySync es.EntitySync) {
@@ -17,7 +16,7 @@ func SetupSync(entitySync es.EntitySync) {
 	*/
 	var entityHome shared.EntityType = "home"
 	entitySync.RegisterEntityAndDBHandler(entityHome, func(entityKey shared.EntityKey, secret string, handler shared.ByteHandler) {
-		ok, ID := db.GlobalSessionCache.SessionValid(secret)
+		ok, ID := controller.SessionValid(secret)
 		if !ok {
 			logrus.Errorln("Access denied based on secret", secret)
 			return
@@ -47,7 +46,7 @@ func SetupSync(entitySync es.EntitySync) {
 	*/
 	var entityItems shared.EntityType = "items"
 	entitySync.RegisterEntityAndDBHandler(entityItems, func(entityKey shared.EntityKey, secret string, handler shared.ByteHandler) {
-		ok, _ := db.GlobalSessionCache.SessionValid(secret)
+		ok, _ := controller.SessionValid(secret)
 		if !ok {
 			logrus.Errorln("Access denied based on secret", secret)
 			return
