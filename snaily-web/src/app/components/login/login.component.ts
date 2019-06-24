@@ -5,7 +5,6 @@ import {RegisterService} from '../../services/register.service';
 import {MessageRegisterRequestV1} from '../../model/register-request-v1';
 import {MessageLoginRequestV1} from '../../model/login-request-v1';
 import {LoginService} from '../../services/login.service';
-import {environment} from '../../../environments/environment';
 import {WS} from '../../util/ws';
 
 declare var Swal: any;

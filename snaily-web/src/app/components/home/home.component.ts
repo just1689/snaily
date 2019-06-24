@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ParamMap, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {ItemService} from '../../services/item.service';
 import {ActivatedRoute} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -8,7 +8,6 @@ import {ItemV1} from '../../model/item-v1';
 import {UserV1} from '../../model/user-v1';
 import {WS} from '../../util/ws';
 import {UserState} from '../../model/state/userState';
-import {LoadingState} from '../../model/state/loading';
 
 
 @Component({

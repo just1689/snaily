@@ -7,7 +7,6 @@ import {Messages} from '../../util/Messages';
 import {UserV1} from '../../model/user-v1';
 import {MessageID} from '../../model/generic';
 import {WS} from '../../util/ws';
-import {UserState} from '../../model/state/userState';
 
 declare var Swal: any;
 
