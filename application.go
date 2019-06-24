@@ -35,6 +35,7 @@ func main() {
 
 	setMailClientConfig()
 	setDBDefaultConfig()
+	setETCDConfig()
 
 	router := mux.NewRouter()
 
@@ -60,6 +61,10 @@ func main() {
 	//The server
 	http.Handle("/", router)
 	log.Fatal(http.ListenAndServe(*addr, nil))
+}
+
+func setETCDConfig() {
+
 }
 
 func setMailClientConfig() {

@@ -7,7 +7,7 @@ import (
 
 var DefaultConfig = Config{}
 
-func Connect(config Config) (conn *pgx.Conn, err error) {
+func ConnectPg(config Config) (conn *pgx.Conn, err error) {
 	conn, err = pgx.Connect(pgx.ConnConfig{
 		Host:     config.Host,
 		Port:     config.Port,
