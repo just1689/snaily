@@ -67,7 +67,7 @@ func setETCDConfig() {
 	// "http://127.0.0.1:2379"
 	eURL := os.Getenv("etcd")
 	if eURL == "" {
-		eURL = "http://127.0.0.1:2379"
+		eURL = "http://127.0.0.1:2375"
 		logrus.Println("Defaulting etcd conn to", eURL)
 	}
 	g, s, err := db.ConnectETCD(eURL)
