@@ -6,6 +6,8 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {Messages} from '../../util/Messages';
 import {UserV1} from '../../model/user-v1';
 import {MessageID} from '../../model/generic';
+import {WS} from '../../util/ws';
+import {UserState} from '../../model/state/userState';
 
 declare var Swal: any;
 
@@ -38,17 +40,40 @@ export class ViewComponent implements OnInit {
       }
     });
 
-    this.load();
+    this.refresh();
+
+    setTimeout(() => {
+      WS.handler = (result) => {
+        this.handleResult(JSON.parse(result));
+      };
+      const action = {
+        action: 'subscribe',
+        body: {
+          entity: 'items',
+          id: this.id,
+        },
+      };
+      WS.send(JSON.stringify(action));
+    }, 1000);
+
 
   }
 
-  private load(): void {
+  private handleResult(result: any): void {
+    if (result.item.id !== this.id) {
+      console.log('Not for this context');
+      return;
+    }
+    this.item = result.item;
+    this.users = result.users;
+
+  }
+
+  private refresh(): void {
     const i = new ItemV1();
     i.id = this.id;
     this.itemService.getItem(i, (result) => {
-
-        this.item = result.item;
-        this.users = result.users;
+        this.handleResult(result);
 
       }, (err: HttpErrorResponse) => {
         if (err.status === 403) {
@@ -90,7 +115,7 @@ export class ViewComponent implements OnInit {
     const r = new MessageID();
     r.id = this.item.id;
     this.itemService.closeItem(r, () => {
-      this.load();
+      this.refresh();
     }, (error) => {
       console.log(error);
     });
