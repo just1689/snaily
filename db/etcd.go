@@ -10,7 +10,13 @@ import (
 type Getter func(key string) string
 type Setter func(key, value string) error
 
-// "http://127.0.0.1:2379"
+var DefaultETCDClient EtcdClient
+
+type EtcdClient struct {
+	Getter Getter
+	Setter Setter
+}
+
 func ConnectETCD(url string) (getter Getter, setter Setter, err error) {
 
 	cfg := client.Config{
@@ -27,18 +33,20 @@ func ConnectETCD(url string) (getter Getter, setter Setter, err error) {
 	getter = func(key string) string {
 		resp, err := kapi.Get(context.Background(), key, nil)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
+			return ""
 		}
 		return resp.Node.Value
 	}
 
-	setter = func(key, value string) error {
-		_, err := kapi.Set(context.Background(), key, value, nil)
+	setter = func(key, value string) (err error) {
+		_, err = kapi.Set(context.Background(), key, value, nil)
 		if err != nil {
 			log.Println(err)
 		}
 		return
 	}
+
 	return
 
 }
