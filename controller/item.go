@@ -47,8 +47,14 @@ func CloseItem(conn *pgx.Conn, item *model.Item, closedBy string) (err error) {
 	if err != nil {
 		logrus.Errorln(err)
 	}
+
+	//Change home screens
 	NotifyChangeHome(item.CreatedBy)
 	NotifyChangeHome(item.WaitingFor)
+
+	//Change view pages
+	NotifyChangeItems(item.ID)
+
 	return
 }
 
