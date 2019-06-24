@@ -31,8 +31,6 @@ func ConnectETCD(url string) (getter Getter, setter Setter, err error) {
 
 	kapi := client.NewKeysAPI(c)
 
-	kapi.Set()
-
 	getter = func(key string) string {
 		resp, err := kapi.Get(context.Background(), key, nil)
 		if err != nil {
