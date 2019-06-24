@@ -8,7 +8,7 @@ import (
 )
 
 type Getter func(key string) string
-type Setter func(key, value string) error
+type Setter func(key, value string, TTL time.Duration) error
 
 var DefaultETCDClient EtcdClient
 
@@ -30,6 +30,9 @@ func ConnectETCD(url string) (getter Getter, setter Setter, err error) {
 	}
 
 	kapi := client.NewKeysAPI(c)
+
+	kapi.Set()
+
 	getter = func(key string) string {
 		resp, err := kapi.Get(context.Background(), key, nil)
 		if err != nil {
@@ -39,8 +42,10 @@ func ConnectETCD(url string) (getter Getter, setter Setter, err error) {
 		return resp.Node.Value
 	}
 
-	setter = func(key, value string) (err error) {
-		_, err = kapi.Set(context.Background(), key, value, nil)
+	setter = func(key, value string, TTL time.Duration) (err error) {
+		_, err = kapi.Set(context.Background(), key, value, &client.SetOptions{
+			TTL: TTL,
+		})
 		if err != nil {
 			log.Println(err)
 		}
