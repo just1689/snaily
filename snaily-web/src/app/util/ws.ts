@@ -40,7 +40,7 @@ export class WS {
 
     WS.socket.onopen = function (e) {
       WS.connected = true;
-      console.log('[open] Connection established, send -> server');
+      // console.log('[open] Connection established, send -> server');
       const action = {
         action: 'secret',
         body: key,
