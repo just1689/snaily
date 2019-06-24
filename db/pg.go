@@ -5,7 +5,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var DefaultConfig = Config{}
+var DefaultConfigPg = Config{}
 
 func ConnectPg(config Config) (conn *pgx.Conn, err error) {
 	conn, err = pgx.Connect(pgx.ConnConfig{

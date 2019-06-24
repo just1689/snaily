@@ -79,17 +79,17 @@ func setMailClientConfig() {
 }
 
 func setDBDefaultConfig() {
-	db.DefaultConfig.User = *DatabaseUser
-	db.DefaultConfig.Password = *DatabasePassword
-	db.DefaultConfig.Host = *DatabaseHost
-	db.DefaultConfig.Port = uint16(*Port)
-	db.DefaultConfig.Database = DatabaseDatabase
+	db.DefaultConfigPg.User = *DatabaseUser
+	db.DefaultConfigPg.Password = *DatabasePassword
+	db.DefaultConfigPg.Host = *DatabaseHost
+	db.DefaultConfigPg.Port = uint16(*Port)
+	db.DefaultConfigPg.Database = DatabaseDatabase
 
 	logrus.Infoln(
-		db.DefaultConfig.User, "@",
-		db.DefaultConfig.Host, ":",
-		db.DefaultConfig.Port, "/",
-		db.DefaultConfig.Database,
+		db.DefaultConfigPg.User, "@",
+		db.DefaultConfigPg.Host, ":",
+		db.DefaultConfigPg.Port, "/",
+		db.DefaultConfigPg.Database,
 	)
 }
 

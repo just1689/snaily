@@ -30,7 +30,7 @@ func handleRegisterUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	conn, err := db.ConnectPg(db.DefaultConfig)
+	conn, err := db.ConnectPg(db.DefaultConfigPg)
 	if err != nil {
 		logrus.Errorln(err)
 		http.Error(w, "Database connection error", http.StatusInternalServerError)
@@ -87,7 +87,7 @@ func handleLoginUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//Persist or store
-	conn, err := db.ConnectPg(db.DefaultConfig)
+	conn, err := db.ConnectPg(db.DefaultConfigPg)
 	if err != nil {
 		logrus.Errorln(err)
 		http.Error(w, "Database connection error", http.StatusInternalServerError)

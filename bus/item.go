@@ -14,7 +14,7 @@ func CreateItem(item *model.Item, createdBy string) (created bool, err error) {
 	item.GenerateID()
 	item.CreatedBy = createdBy
 
-	conn, err := db.ConnectPg(db.DefaultConfig)
+	conn, err := db.ConnectPg(db.DefaultConfigPg)
 	if err != nil {
 		logrus.Errorln(err)
 		return false, errors.New("Database connection problem")
@@ -47,7 +47,7 @@ func CreateItem(item *model.Item, createdBy string) (created bool, err error) {
 
 func CloseItem(ID, closedBy string) (ok bool, err error) {
 	var conn *pgx.Conn
-	if conn, err = db.ConnectPg(db.DefaultConfig); err != nil {
+	if conn, err = db.ConnectPg(db.DefaultConfigPg); err != nil {
 		logrus.Errorln(err)
 		return
 	}
@@ -71,7 +71,7 @@ func CloseItem(ID, closedBy string) (ok bool, err error) {
 func GetMyItems(ID string) (result model.MessageMyItemsResponseV1, err error) {
 
 	var conn *pgx.Conn
-	if conn, err = db.ConnectPg(db.DefaultConfig); err != nil {
+	if conn, err = db.ConnectPg(db.DefaultConfigPg); err != nil {
 		logrus.Errorln(err)
 		return
 	}
@@ -95,7 +95,7 @@ func GetMyItems(ID string) (result model.MessageMyItemsResponseV1, err error) {
 
 	go func(in chan string) {
 		var conn *pgx.Conn
-		if conn, err = db.ConnectPg(db.DefaultConfig); err != nil {
+		if conn, err = db.ConnectPg(db.DefaultConfigPg); err != nil {
 			logrus.Errorln(err)
 			return
 		}
@@ -123,7 +123,7 @@ func GetMyItems(ID string) (result model.MessageMyItemsResponseV1, err error) {
 	wgItems.Add(1)
 	go func() {
 		var conn *pgx.Conn
-		if conn, err = db.ConnectPg(db.DefaultConfig); err != nil {
+		if conn, err = db.ConnectPg(db.DefaultConfigPg); err != nil {
 			logrus.Errorln(err)
 			return
 		}
@@ -147,7 +147,7 @@ func GetMyItems(ID string) (result model.MessageMyItemsResponseV1, err error) {
 	wgItems.Add(1)
 	go func() {
 		var conn *pgx.Conn
-		if conn, err = db.ConnectPg(db.DefaultConfig); err != nil {
+		if conn, err = db.ConnectPg(db.DefaultConfigPg); err != nil {
 			logrus.Errorln(err)
 			return
 		}
@@ -177,7 +177,7 @@ func GetMyItems(ID string) (result model.MessageMyItemsResponseV1, err error) {
 
 func GetItem(itemID string) (result model.MessageGetItemResponseV1, err error) {
 
-	conn, err := db.ConnectPg(db.DefaultConfig)
+	conn, err := db.ConnectPg(db.DefaultConfigPg)
 	if err != nil {
 		logrus.Errorln(err)
 		return
