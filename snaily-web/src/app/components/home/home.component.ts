@@ -84,7 +84,7 @@ export class HomeComponent implements OnInit {
       if (index === -1) {
         this.createdByMe.push(a);
       } else {
-        // this.createdByMe[index] = a;
+        this.createdByMe[index] = a;
       }
     }
 
