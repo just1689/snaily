@@ -2,7 +2,9 @@ package db
 
 import (
 	"context"
-	"go.etcd.io/etcd/client"
+	"fmt"
+	"github.com/sirupsen/logrus"
+	"go.etcd.io/etcd/clientv3"
 	"log"
 	"time"
 )
@@ -19,37 +21,53 @@ type EtcdClient struct {
 
 func ConnectETCD(url string) (getter Getter, setter Setter, err error) {
 
-	cfg := client.Config{
-		Endpoints:               []string{url},
-		Transport:               client.DefaultTransport,
-		HeaderTimeoutPerRequest: time.Second,
+	cfg := clientv3.Config{
+		Endpoints:   []string{url},
+		DialTimeout: 5 * time.Second,
 	}
-	c, err := client.New(cfg)
+	cli, err := clientv3.New(cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	kapi := client.NewKeysAPI(c)
-
 	getter = func(key string) string {
-		resp, err := kapi.Get(context.Background(), key, nil)
+		ctx, _ := context.WithTimeout(context.Background(), time.Hour)
+		key = prefixKey(key)
+		resp, err := cli.Get(ctx, key)
 		if err != nil {
-			log.Println(err)
+			logrus.Errorln(err)
 			return ""
 		}
-		return resp.Node.Value
+
+		for _, v := range resp.Kvs {
+			return string(v.Value)
+		}
+		return ""
 	}
 
 	setter = func(key, value string, TTL time.Duration) (err error) {
-		_, err = kapi.Set(context.Background(), key, value, &client.SetOptions{
-			TTL: TTL,
-		})
+		ctx, cancel := context.WithTimeout(context.Background(), time.Hour)
+		key = prefixKey(key)
+		logrus.Println("Going to set", key, value, "for ttl", TTL)
+		_, err = cli.Put(ctx, key, value, nil)
 		if err != nil {
-			log.Println(err)
+			logrus.Errorln(err)
 		}
+		cancel()
 		return
 	}
 
+	//Test
+	//_ = setter("1+1", "2", time.Hour)
+	//s := getter("1+1")
+	//if s != "2" {
+	//	logrus.Fatalln("Not 2")
+	//}
+
 	return
 
+}
+
+func prefixKey(key string) string {
+	return fmt.Sprint("/", key)
 }
